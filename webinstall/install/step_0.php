@@ -73,12 +73,28 @@
             <p align="right">xxxx有限责任公司</p>
         </div>
         <div class="panel-footer next_footer">
-            <div><input type="checkbox"></div>
-            <div>
-                <a class="btn btn-default">下一步</a>
+            <div class="col-md-2"><input type="checkbox" class="agreement"> <span
+                        style="color: #2f3238">同意本协议进入安装</span></div>
+            <div class="col-md-10">
+                <a class="btn btn-default disabled next_btn" style="pointer-events: unset;">下一步</a>
+                <a class="btn btn-danger">取消</a>
             </div>
         </div>
     </div>
+    <?php echo $html_footer; ?>
 </div>
+<script>
+    require(['jquery'], function ($) {
+        $(".agreement").change(function () {
+            console.log();
+            if ($(this).is(':checked')) {
+                $(".next_btn").removeClass('disabled').removeClass('btn-default').addClass('btn-success').attr('href','install.php?step=1')
+            } else {
+                $(".next_btn").addClass('disabled').addClass('btn-default').removeClass('btn-success');
+            }
+        })
+    })
+
+</script>
 </body>
 </html>

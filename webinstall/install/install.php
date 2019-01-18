@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: 运营部
+ * User: 南丞
  * Date: 2019/1/18
  * Time: 15:51
  *
@@ -32,6 +32,7 @@ set_time_limit(0);   //设置运行时间
 error_reporting(E_ALL & ~E_NOTICE);  //显示全部错误
 define('ROOT_PATH', dirname(dirname(__FILE__)));  //定义根目录
 define('DBCHARSET', 'UTF8');   //设置数据库默认编码
+define('BASE_URL', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
 require_once __DIR__ . '/helper.php';
 if (function_exists('date_default_timezone_set')) {
     date_default_timezone_set('Asia/Shanghai');
@@ -71,14 +72,21 @@ $html_header = '
 ';
 require(__DIR__ . '/include/function.php');
 
-$html_footer = <<<FOOT
-<div class="footer">
-  <h5>Powered by <small class="blue">LIJIA</small><small class="orange"></small></h5>
-  <h6>版权所有 2016-2018 &copy; <a href="http://www.XXXX.com" target="_blank">lijia</a></h6>
-</div>
-FOOT;
+$html_footer = "
+
+";
 if (!in_array($_GET['step'], array(1, 2, 3, 4, 5))) {
     $_GET['step'] = 0;
+}
+
+switch (intval($_GET['step'])) {
+    case 1:
+         require(__DIR__.'/include/var.php');
+         env_check($env_items);
+         dirfile_check($dirfile_items);
+         break;
+    case 2:
+        break;
 }
 
 
