@@ -1,0 +1,42 @@
+i, em { font-style: normal;}
+.header_bottom {
+    display: flex;
+}
+
+.header_bottom span {
+    flex: 1;
+}
+
+.header_bottom span:nth-child(1) {
+    flex: 4;
+}
+.license {
+    font-size: 12px;
+    line-height: 24px;
+    max-height:550px;
+    overflow-y: scroll;
+}
+.license h1 {
+    font-size: 18px;
+    line-height: 28px;
+    color: #7E8C8D;
+    text-align: center;
+}
+.license p {
+    font-size: 12px;
+    text-indent: 2em;
+}
+.license h3 {
+    font-size: 18px;
+    color: #7E8C8D;
+}
+.next_footer {
+    display: flex;
+}
+.next_footer div:first-child{
+    flex: 1;
+}
+.next_footer div{
+    flex:12;
+    text-align: center;
+}

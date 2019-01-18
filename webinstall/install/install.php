@@ -58,17 +58,17 @@ if (is_file('lock.txt') && $_GET['step'] != 5) {
     exit;
 }
 $html_title = '程序安装向导';
-$html_header = <<<EOF
-<div class="header">
-  <div class="layout">
-    <div class="title">
-      <h5>XXXX系统</h5>
-      <h2>系统安装向导</h2>
+$sys_name = 'pfinal-cms';
+$html_header = '
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <i class="sys_name">' . $sys_name . '</i>
+            <div class="header_bottom"><span>程序安装向导</span><span></span><span>版本: 2019.01.18.0001</span></div>
+        </div>
     </div>
-    <div class="version">版本: 2017.04.12.0001</div>
-  </div>
 </div>
-EOF;
+';
 require(__DIR__ . '/include/function.php');
 
 $html_footer = <<<FOOT
@@ -80,4 +80,6 @@ FOOT;
 if (!in_array($_GET['step'], array(1, 2, 3, 4, 5))) {
     $_GET['step'] = 0;
 }
+
+
 include("step_{$_GET['step']}.php");
