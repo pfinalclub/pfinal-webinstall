@@ -70,7 +70,13 @@ function dirfile_check(&$dirfile_items)
                 }
             } else {
                 if ($fp = @fopen(ROOT_PATH . $val_path)) {
-                    //TODO 检测权限
+                    $dirfile_items[$key]['status'] = 1;
+                    $dirfile_items[$key]['current'] = '+r+w';
+                    @fclose($fp);
+                    @unlink(ROOT_PATH . $val_path);
+                } else {
+                    $dirfile_items[$key]['status'] = -1;
+                    $dirfile_items[$key]['current'] = 'nofile';
                 }
             }
         }
@@ -96,4 +102,15 @@ function dir_writeable($dir)
         }
     }
     return $writeable;
+}
+
+/**
+ *  函数检测
+ */
+
+function function_check(&$func_items)
+{
+    foreach ($func_items as $k => $val) {
+        $func_items[$k]['status'] = function_exists($val['name']) ? 1 : 0;
+    }
 }

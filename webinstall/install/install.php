@@ -84,6 +84,7 @@ switch (intval($_GET['step'])) {
          require(__DIR__.'/include/var.php');
          env_check($env_items);
          dirfile_check($dirfile_items);
+         function_check($func_items);
          break;
     case 2:
         break;
