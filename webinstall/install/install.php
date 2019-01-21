@@ -86,7 +86,9 @@ switch (intval($_GET['step'])) {
          dirfile_check($dirfile_items);
          function_check($func_items);
          break;
-    case 2:
+    case 3:
+
+
         break;
 }
 

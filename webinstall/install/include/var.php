@@ -36,7 +36,7 @@ $dirfile_items = [
 ];
 
 $func_items = [
-    ['name' => 'mysql_connect'],
+    ['name' => 'mysqli_connect'],
     ['name' => 'fsockopen'],
     ['name' => 'file_get_contents'],
     ['name' => 'json_encode'],

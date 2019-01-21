@@ -8,7 +8,7 @@
     <title><?php echo $html_title; ?></title>
     <script>
         window.pfinaljs = {
-            base: './pfinaljs/'
+            base: './'
         };
     </script>
     <script src="./pfinaljs/require.js"></script>
