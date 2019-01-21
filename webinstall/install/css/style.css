@@ -122,23 +122,17 @@ em {
 
 .schedule-line-now em {
     background-image: -ms-linear-gradient(right, #ECF0F1 0%, #f50 100%)
-        /* IE10 Consumer Preview */
-    ;
+    /* IE10 Consumer Preview */;
     background-image: -moz-linear-gradient(right, #ECF0F1 0%, #f50 100%)
-        /* Mozilla Firefox */
-    ;
+    /* Mozilla Firefox */;
     background-image: -o-linear-gradient(right, #ECF0F1 0%, #f50 100%)
-        /* Opera */
-    ;
+    /* Opera */;
     background-image: -webkit-gradient(linear, right top, left top, color-stop(0, #ECF0F1), color-stop(1, #f50))
-        /* Webkit (Safari/Chrome 10) */
-    ;
+    /* Webkit (Safari/Chrome 10) */;
     background-image: -webkit-linear-gradient(right, #ECF0F1 0%, #f50 100%)
-        /* Webkit (Chrome 11+) */
-    ;
+    /* Webkit (Chrome 11+) */;
     background-image: linear-gradient(to left, #ECF0F1 0%, #f50 100%)
-        /* W3C Markup, IE10 Release Preview */
-    ;
+    /* W3C Markup, IE10 Release Preview */;
     display: block;
     width: 60px;
     height: 8px;
@@ -357,8 +351,56 @@ em {
     font-size: 5em;
 }
 
-.model_list p:last-child {
+.select_input {
     text-align: left;
-    margin-bottom: 10px;
-    display: block
+    height: 30px;
+    width:100%;
+}
+
+/* iCheck jquery plugin
+-------------------------------------- */
+.icheckbox_flat-green, .iradio_flat-green {
+    background: url(../images/install_bg.png) no-repeat;
+    display: block;
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+}
+
+.icheckbox_flat-green {
+    background-position: 0 -280px;
+}
+
+.icheckbox_flat-green.checked {
+    background-position: -22px -280px;
+}
+
+.icheckbox_flat-green.disabled {
+    background-position: -44px -280px;
+    cursor: default;
+}
+
+.icheckbox_flat-green.checked.disabled {
+    background-position: -66px -280px;
+}
+
+.iradio_flat-green {
+    background-position: -88px -280px;
+}
+
+.iradio_flat-green.checked {
+    background-position: -110px -280px;
+}
+
+.iradio_flat-green.disabled {
+    background-position: -132px -280px;
+    cursor: default;
+}
+
+.iradio_flat-green.checked.disabled {
+    background-position: -154px -280px;
 }

@@ -45,27 +45,33 @@
                     <h3 class="panel-title">选择系统模块</h3>
                 </div>
                 <div class="panel-body" style="padding-left:50px;">
-                    <form class="form-horizontal select_system">
+                    <form class="form-horizontal select_system" id="install_form" action="install.php" method="get">
+                        <input type="hidden" value="3" name="step">
                         <div class="form-group">
-                           <label class="system_all">
-                               <input type="radio" name="iCheck" value="full" id="radio-1" class="green-radio" checked>
-                               <span class="label label-info"><i class="fa fa-cogs"></i> 完全安装 pfinalcms系统</span>
-                           </label>
+                            <label class="system_all">
+                                <input type="checkbox" name="iCheck" value="full" id="radio-1" class="green-radio"
+                                       checked>
+                                <span class="label label-info" style="margin-left: 10px"><i class="fa fa-cogs"></i> 完全安装 pfinalcms系统</span>
+                            </label>
                         </div>
-                        <div class="panel panel-default select-module" style="display:block">
-                              <div class="panel-heading">
-                                    <h3 class="panel-title">选择系统</h3>
-                              </div>
-                              <div class="panel-body">
+                        <div class="panel panel-default select-module" style="display:none">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">选择系统</h3>
+                            </div>
+                            <div class="panel-body">
                                 <div class="row">
                                     <div class="col-sm-6 col-md-4">
-                                        <div class="thumbnail model_list"> 
+                                        <div class="thumbnail model_list">
                                             <span><i class="fa fa-shopping-bag"></i>  </span>
                                             <div class="caption">
                                                 <h4>商城</h4>
                                                 <p>商城模块是一套功能完善的多用户商城系统，也是整套电商门户的核心程...</p>
-                                                <p><input type="checkbox" name="shop" id="shop" value="1" checked="checked"  disabled=""></p>
                                             </div>
+
+                                        </div>
+                                        <div class="select_input">
+                                            <input type="checkbox" name="shop" id="shop" value="1" checked="checked">
+                                            &nbsp;&nbsp;<small>选择此系统</small>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
@@ -74,8 +80,13 @@
                                             <div class="caption">
                                                 <h4>CMS</h4>
                                                 <p>CMS模块拥有文章、画报、专题发布等功能，自定义编辑模板,可在文章内容中关联商品...</p>
-                                                <p><input type="checkbox" name="cms" id="cms" value="1" checked="checked"  disabled=""></p>
+
                                             </div>
+                                        </div>
+                                        <div class="select_input"><input type="checkbox" name="cms" id="cms"
+                                                                         value="1"
+                                                                         checked="checked"> &nbsp;&nbsp;<small>选择此系统
+                                            </small>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
@@ -84,8 +95,13 @@
                                             <div class="caption">
                                                 <h4>圈子</h4>
                                                 <p>圈子模块是会员交流互动的理想环境，增强站点人气。主题帖中可与商品关联，特色鲜明...</p>
-                                                <p><input type="checkbox" name="circle" id="circle" value="1" checked="checked"  disabled=""></p>
+
                                             </div>
+                                        </div>
+                                        <div class="select_input"><input type="checkbox" name="circle"
+                                                                         id="circle" value="1"
+                                                                         checked="checked"> &nbsp;&nbsp;<small>选择此系统
+                                            </small>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
@@ -94,25 +110,65 @@
                                             <div class="caption">
                                                 <h4>微商城</h4>
                                                 <p>微商城模块以新颖的形式展示会员已购商品、实物秀图，提高商品浏览量，促进商城经营...</p>
-                                                <p><input type="checkbox" name="microshop" id="microshop" value="1" checked="checked"  disabled=""></p>
+
                                             </div>
+                                        </div>
+                                        <div class="select_input"><input type="checkbox" name="microshop"
+                                                                         id="microshop" value="1"
+                                                                         checked="checked"> &nbsp;&nbsp;<small>选择此系统
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                            </div>
                         </div>
                 </div>
                 <div class="panel-footer">
                     <div class="btn-next">
-                        <a href="install.php" class="btn btn-primary btn-xs">上一步</a><a href="###" id="next"  class="btn btn-primary btn-xs">下一步</a>
+                        <a href="install.php" class="btn btn-primary btn-xs">上一步</a><a href="###" id="next"
+                                                                                       class="btn btn-primary btn-xs">下一步</a>
                     </div>
                 </div>
-            </form>
+                </form>
             </div>
         </div>
     </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="./pfinaljs/plug/jquery_icheck/jquery.icheck.min.js"></script>
     <script>
-        
+        $(document).ready(function () {
+            $('.system_all input[type="checkbox"]').on('ifClicked', function (event) {
+                //console.log(this);
+                if (this.id == 'radio-1') {
+                    $('.select-module').show();
+                } else {
+                    $('.select-module').hide();
+                }
+            }).iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+            });
+            $('.select_input input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+            });
+            $('#next').click(function () {
+                //alert(123);
+                if ($('#cms').parent().hasClass('checked') && $('#shop').attr('checked') ) {
+                    $('#install_form').submit();
+                }else {
+                    require(['pfinaljs'],function (pfinaljs) {
+                        pfinaljs.msg('商城与CMS必须安装')
+                    })
+                }
+                // if ($('#cms').attr('checked') && $('#shop').attr('checked')) {
+                //     $('#install_form').submit();
+                // } else {
+                //     alert('商城与CMS必须安装');
+                // }
+                return false;
+            });
+        });
     </script>
 </body>
 </html>
