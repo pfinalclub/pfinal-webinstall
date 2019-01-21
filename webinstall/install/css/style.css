@@ -218,11 +218,107 @@ em {
     font-weight: 600;
     color: #f50;
 }
-.btn-next{
-    width:15%;
+
+.btn-next {
+    width: 15%;
     margin: 0 auto;
     text-align: center;
 }
+
 .btn-next a {
-    margin-left:10px;
+    margin-left: 10px;
 }
+
+#step2 .schedule-ico span.a {
+    background-position: -120px 0;
+}
+
+#step2 .schedule-ico span.b {
+    background-position: -150px 0;
+}
+
+#step2 .schedule-line-now {
+    width: 440px;
+}
+
+#step2 .schedule-point-now span.a, #step2 .schedule-point-now span.b {
+    background-color: #f50;
+}
+
+#step2 .schedule-text span.a, #step2 .schedule-text span.b {
+    font-weight: 600;
+    color: #f50;
+}
+
+.select_system {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    /*flex-direction: ;*/
+}
+
+.select_system .form-group {
+    width: 25%;
+    /*width:25%;*/
+    height: 200px;
+    border: 1px solid red;
+}
+
+#step3 .schedule-ico span.a {
+    background-position: -120px 0;
+}
+
+#step3 .schedule-ico span.b {
+    background-position: -150px 0;
+}
+
+#step3 .schedule-ico span.c {
+    background-position: -180px 0;
+}
+
+#step3 .schedule-line-now {
+    width: 680px;
+}
+
+#step3 .schedule-point-now span.a, #step3 .schedule-point-now span.b, #step3 .schedule-point-now span.c {
+    background-color: #f50;
+}
+
+#step3 .schedule-text span.a, #step3 .schedule-text span.b, #step3 .schedule-text span.c {
+    font-weight: 600;
+    color: #f50;
+}
+
+#step4 .schedule-ico span.a {
+    background-position: -120px 0;
+}
+
+#step4 .schedule-ico span.b {
+    background-position: -150px 0;
+}
+
+#step4 .schedule-ico span.c {
+    background-position: -180px 0;
+}
+
+#step4 .schedule-ico span.d {
+    background-position: -210px 0;
+}
+
+#step4 .schedule-line-now {
+    width: 900px;
+}
+
+#step4 .schedule-line-now em {
+    display: none;
+}
+
+#step4 .schedule-point-now span.a, #step4 .schedule-point-now span.b, #step4 .schedule-point-now span.c, #step4 .schedule-point-now span.d {
+    background-color: #f50;
+}
+
+#step4 .schedule-text span.a, #step4 .schedule-text span.b, #step4 .schedule-text span.c, #step4 .schedule-text span.d {
+    font-weight: 600;
+    color: #f50;
+}
+

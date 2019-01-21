@@ -88,7 +88,6 @@ switch (intval($_GET['step'])) {
          break;
     case 3:
 
-
         break;
 }
 
