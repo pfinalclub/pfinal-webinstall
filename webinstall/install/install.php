@@ -143,6 +143,9 @@ function step3(&$install_error, &$install_recover)
                 }
             }
         }
+        require ('step_4.php');
+        $sitepath = strtolower(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/')));
+        var_dump($sitepath);
     }
 
 
