@@ -19,7 +19,7 @@
 </head>
 <body>
 <?php echo $html_header; ?>
-<div class="container">
+<div class="container" style="position: relative">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Step.3 创建数据库

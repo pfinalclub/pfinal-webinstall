@@ -108,6 +108,7 @@ function step3(&$install_error, &$install_recover)
     $db_prefix = $_POST['db_prefix'];
     $admin = $_POST['admin'];
     $password = $_POST['password'];
+    $rpassword = $_POST['rpassword'];
     if (!$db_host || !$db_port || !$db_user || !$db_pwd || !$db_name || !$db_prefix || !$admin || !$password) {
         $install_error = '<span style="color: red"><small>输入不完整，请检查</small></span>';
     }
@@ -116,6 +117,9 @@ function step3(&$install_error, &$install_recover)
     }
     if (strlen($admin) > 15 || preg_match("/^$|^c:\\con\\con$|　|[,\"\s\t\<\>&]|^游客|^Guest/is", $admin)) {
         $install_error .= '<span style="color: red"><small>非法用户名，用户名长度不应当超过 15 个英文字符，且不能包含特殊字符，一般是中文，字母或者数字</small></span>';
+    }
+    if ($password != $rpassword) {
+        $install_error .= '<span style="color: red"><small>两次密码不一致</small></span>';
     }
     if ($install_error == '') {
         $mysqli = @ new mysqli($db_host, $db_user, $db_pwd, '', $db_port);
@@ -143,9 +147,11 @@ function step3(&$install_error, &$install_recover)
                 }
             }
         }
-        require ('step_4.php');
+        require('step_4.php');
         $sitepath = strtolower(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/')));
         var_dump($sitepath);
+    } else {
+        return;
     }
 
 
