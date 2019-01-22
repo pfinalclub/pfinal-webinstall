@@ -134,7 +134,7 @@
         </div>
     </div>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="./pfinaljs/plug/jquery_icheck/jquery.icheck.min.js"></script>
+    <script src="https://cdn.bootcss.com/iCheck/1.0.2/icheck.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.system_all input[type="checkbox"]').on('ifClicked', function (event) {

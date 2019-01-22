@@ -81,15 +81,69 @@ if (!in_array($_GET['step'], array(1, 2, 3, 4, 5))) {
 
 switch (intval($_GET['step'])) {
     case 1:
-         require(__DIR__.'/include/var.php');
-         env_check($env_items);
-         dirfile_check($dirfile_items);
-         function_check($func_items);
-         break;
+        require(__DIR__ . '/include/var.php');
+        env_check($env_items);
+        dirfile_check($dirfile_items);
+        function_check($func_items);
+        break;
     case 3:
-
+        $install_error = '';
+        $install_recover = '';
+        $demo_data = file_exists('../data/utf8_add.sql') ? true : false;
+        step3($install_error, $install_recover);
         break;
 }
 
-
 include("step_{$_GET['step']}.php");
+
+function step3(&$install_error, &$install_recover)
+{
+    global $html_title, $html_header, $html_footer;
+    if ($_POST['submitform'] != 'submit') return;
+    $db_host = $_POST['db_host'];
+    $db_port = $_POST['db_port'];
+    $db_user = $_POST['db_user'];
+    $db_pwd = $_POST['db_pwd'];
+    $db_name = $_POST['db_name'];
+    $db_prefix = $_POST['db_prefix'];
+    $admin = $_POST['admin'];
+    $password = $_POST['password'];
+    if (!$db_host || !$db_port || !$db_user || !$db_pwd || !$db_name || !$db_prefix || !$admin || !$password) {
+        $install_error = '<span style="color: red"><small>输入不完整，请检查</small></span>';
+    }
+    if (strpos($db_prefix, '.') !== false) {
+        $install_error .= '<span style="color: red"><small>数据表前缀为空，或者格式错误，请检查</small></span>';
+    }
+    if (strlen($admin) > 15 || preg_match("/^$|^c:\\con\\con$|　|[,\"\s\t\<\>&]|^游客|^Guest/is", $admin)) {
+        $install_error .= '<span style="color: red"><small>非法用户名，用户名长度不应当超过 15 个英文字符，且不能包含特殊字符，一般是中文，字母或者数字</small></span>';
+    }
+    if ($install_error == '') {
+        $mysqli = @ new mysqli($db_host, $db_user, $db_pwd, '', $db_port);
+        if ($mysqli->connect_error) {
+            $install_error = '<span style="color: red"><small>数据库连接失败</small></span>';
+            return;
+        }
+
+        if ($mysqli->get_server_info() > '5.0') {
+            $mysqli->query("CREATE DATABASE IF NOT EXISTS `$db_name` DEFAULT CHARACTER SET " . DBCHARSET);
+        } else {
+            $install_error = '<span style="color: red"><small>数据库必须为MySQL5.0版本以上</small></span>';
+            return;
+        }
+        if ($mysqli->error) {
+            $install_error = $mysqli->error;
+            return;
+        }
+        if ($_POST['install_recover'] != 'yes' && ($query = $mysqli->query("SHOW TABLES FROM $db_name"))) {
+            while ($row = mysqli_fetch_array($query)) {
+                if (preg_match("/^$db_prefix/", $row[0])) {
+                    $install_error = '<span style="color: red"><small>数据表已存在，继续安装将会覆盖已有数据</small></span>';
+                    $install_recover = 'yes';
+                    return;
+                }
+            }
+        }
+    }
+
+
+}
