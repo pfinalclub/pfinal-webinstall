@@ -8,7 +8,8 @@
     <title><?php echo $html_title; ?></title>
     <script>
         window.pfinaljs = {
-            base: './'
+           base: './',
+           base_url:'http://localhost/pfinal-webinstall/webinstall/install/'
         };
     </script>
     <script src="./pfinaljs/require.js"></script>
