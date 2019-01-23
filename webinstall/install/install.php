@@ -191,8 +191,6 @@ function step3(&$install_error, &$install_recover, &$step3_show)
         exit("<script type=\"text/javascript\">document.getElementById('install_process').innerHTML = '安装完成，下一步...';document.getElementById('install_process').href='install.php?step=5&sitename={$sitename}&username={$username}&password={$password}';</script>");
         exit();
 
-
-
     } else {
         return;
     }
