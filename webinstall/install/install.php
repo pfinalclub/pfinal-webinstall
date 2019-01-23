@@ -90,13 +90,14 @@ switch (intval($_GET['step'])) {
         $install_error = '';
         $install_recover = '';
         $demo_data = file_exists('../data/utf8_add.sql') ? true : false;
-        step3($install_error, $install_recover);
+        $step3_show = true;
+        step3($install_error, $install_recover, $step3_show);
         break;
 }
 
 include("step_{$_GET['step']}.php");
 
-function step3(&$install_error, &$install_recover)
+function step3(&$install_error, &$install_recover, &$step3_show)
 {
     global $html_title, $html_header, $html_footer;
     if ($_POST['submitform'] != 'submit') return;
@@ -148,11 +149,121 @@ function step3(&$install_error, &$install_recover)
             }
         }
         require('step_4.php');
+        $step3_show = false;
         $sitepath = strtolower(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/')));
-        var_dump($sitepath);
+        $sitepath = str_replace('/install', "", $sitepath) . '/';
+        $auto_site_url = strtolower('http://' . $_SERVER['HTTP_HOST'] . $sitepath);
+        //var_dump($auto_site_url);
+        write_config($auto_site_url);
+        $_charset = strtolower(DBCHARSET);
+        $mysqli->select_db($db_name);
+        $mysqli->set_charset($_charset);
+        $sql = file_get_contents("../data/{$_charset}.sql");
+        //判断是否安装测试数据
+        if ($_POST['demo_data'] == '1') {
+            $sql .= file_get_contents("../data/{$_charset}_add.sql");
+        }
+        $sql = str_replace("\r\n", "\n", $sql);
+        runquery($sql, $db_prefix, $mysqli);
+        showjsmessage('<span class="label label-info">初始化数据</span> ... 成功 ');
+        /**
+         * 转码
+         */
+        $sitename = $_POST['site_name'];
+        $username = $_POST['admin'];
+        $password = $_POST['password'];
+        /**
+         * 产生随机的md5_key，来替换系统默认的md5_key值
+         */
+        $md5_key = md5(random(4).substr(md5($_SERVER['SERVER_ADDR'].$_SERVER['HTTP_USER_AGENT'].$db_host.$db_user.$db_pwd.$db_name.substr(time(), 0, 6)), 8, 6).random(10));
+        //$mysqli->query("UPDATE {$db_prefix}setting SET value='".$sitename."' WHERE name='site_name'");
+
+        //管理员账号密码
+        $mysqli->query("INSERT INTO {$db_prefix}admin (`admin_id`,`admin_name`,`admin_password`,`admin_login_time`,`admin_login_num`,`admin_is_super`) VALUES ('1','$username','". md5($password) ."', '".time()."' ,'0',1);");
+
+        //测试数据
+        if ($_POST['demo_data'] == '1'){
+            $sql .= file_get_contents("../data/{$_charset}_add.sql");
+        }
+        //新增一个标识文件，用来屏蔽重新安装
+        $fp = @fopen('../lock','wb+');
+        @fclose($fp);
+        exit("<script type=\"text/javascript\">document.getElementById('install_process').innerHTML = '安装完成，下一步...';document.getElementById('install_process').href='install.php?step=5&sitename={$sitename}&username={$username}&password={$password}';</script>");
+        exit();
+
+
+
     } else {
         return;
     }
+}
 
+function write_config($url)
+{
+    extract($GLOBALS, EXTR_SKIP);
+    $config = '../data/config.php';
+    $configfile = @file_get_contents($config);
+    $configfile = trim($configfile);
+    $configfile = substr($configfile, -2) == '?>' ? substr($configfile, 0, -2) : $configfile;
+    $charset = 'UTF-8';
+    $db_host = $_POST['db_host'];
+    $db_port = $_POST['db_port'];
+    $db_user = $_POST['db_user'];
+    $db_pwd = $_POST['db_pwd'];
+    $db_name = $_POST['db_name'];
+    $db_prefix = $_POST['db_prefix'];
+    $admin = $_POST['admin'];
+    $password = $_POST['password'];
+    $db_type = 'mysql';
+    $cookie_pre = strtoupper(substr(md5(random(0, 100) . substr($_SERVER['HTTP_USER_AGENT'] . md5($_SERVER['SERVER_ADDR'] . $db_host . $db_user . $db_pwd . $db_name . substr(time(), 0, 6)), 8, 6) . random(0, 100)), 0, 4)) . '_';
+    $configfile = str_replace("===url===", $url, $configfile);
+    $configfile = str_replace("===db_prefix===", $db_prefix, $configfile);
+    $configfile = str_replace("===db_charset===", $charset, $configfile);
+    $configfile = str_replace("===db_host===", $db_host, $configfile);
+    $configfile = str_replace("===db_user===", $db_user, $configfile);
+    $configfile = str_replace("===db_pwd===", $db_pwd, $configfile);
+    $configfile = str_replace("===db_name===", $db_name, $configfile);
+    $configfile = str_replace("===db_port===", $db_port, $configfile);
+    //var_dump($configfile);
+    @file_put_contents('../conf/config.php', $configfile);
+}
 
+function runquery($sql, $db_prefix, $mysqli)
+{
+//  global $lang, $tablepre, $db;
+    if (!isset($sql) || empty($sql)) return;
+    $sql = str_replace("\r", "\n", str_replace('#__', $db_prefix, $sql));
+    $ret = array();
+    $num = 0;
+    foreach (explode(";\n", trim($sql)) as $query) {
+        $ret[$num] = '';
+        $queries = explode("\n", trim($query));
+        foreach ($queries as $query) {
+            $ret[$num] .= (isset($query[0]) && $query[0] == '#') || (isset($query[1]) && isset($query[1]) && $query[0] . $query[1] == '--') ? '' : $query;
+        }
+        $num++;
+    }
+    unset($sql);
+    foreach ($ret as $query) {
+        $query = trim($query);
+        if ($query) {
+            if (substr($query, 0, 12) == 'CREATE TABLE') {
+                $line = explode('`', $query);
+                $data_name = $line[1];
+                showjsmessage('<span class="label label-info">数据表</span>  ' . $data_name . ' ... 创建成功');
+                $mysqli->query(droptable($data_name));
+                $mysqli->query($query);
+                unset($line, $data_name);
+            } else {
+                $mysqli->query($query);
+            }
+        }
+    }
+}
+
+//抛出JS信息
+function showjsmessage($message) {
+    echo '<script type="text/javascript">showmessage(\''.addslashes($message).' \');</script>'."\r\n";
+    flush();
+    ob_flush();
 }

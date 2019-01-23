@@ -44,6 +44,23 @@
                 </div>
             </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-body" id="text-box">
+                <div class="license" id="license"></div>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-box"><a href="javascript:void(0);" id="install_process" class="btn btn-primary">正在安装 ...</a></div>
+            </div>
+        </div>
     </div>
+    <script>
+        var scroll_height = 0;
+
+        function showmessage(message) {
+            document.getElementById('license').innerHTML += message + "<br/>";
+            //document.getElementById("text-box").scrollTop = 500 + scroll_height;
+            scroll_height += 40;
+        }
+    </script>
 </body>
 </html>

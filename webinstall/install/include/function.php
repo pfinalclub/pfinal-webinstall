@@ -114,3 +114,26 @@ function function_check(&$func_items)
         $func_items[$k]['status'] = function_exists($val['name']) ? 1 : 0;
     }
 }
+
+function show_msg($msg){
+    global $html_title,$html_header,$html_footer;
+    include 'step_msg.php';
+    exit();
+}
+//make rand
+function random($length, $numeric = 0) {
+    $seed = base_convert(md5(print_r($_SERVER, 1).microtime()), 16, $numeric ? 10 : 35);
+    $seed = $numeric ? (str_replace('0', '', $seed).'012340567890') : ($seed.'zZ'.strtoupper($seed));
+    $hash = '';
+    $max = strlen($seed) - 1;
+    for($i = 0; $i < $length; $i++) {
+        $hash .= $seed[mt_rand(0, $max)];
+    }
+    return $hash;
+}
+/**
+ * drop table
+ */
+function droptable($table_name){
+    return "DROP TABLE IF EXISTS `". $table_name ."`;";
+}
